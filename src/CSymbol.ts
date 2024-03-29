@@ -834,7 +834,7 @@ export default class CSymbol extends SourceSymbol {
         const paramStartIndex = maskedDeclaration.indexOf('(');
         const paramEndIndex = maskedDeclaration.lastIndexOf(')');
         if (paramStartIndex === -1 || paramEndIndex === -1) {
-            vscode.window.showErrorMessage("Failed to parse (parenthesis)")
+            vscode.window.showErrorMessage('Failed to parse (parenthesis)');
             return ''; //dumb early return
         }
         const parameters = parse.stripDefaultValues(declaration.substring(paramStartIndex + 1, paramEndIndex));

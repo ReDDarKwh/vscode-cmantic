@@ -19,7 +19,7 @@ const disposables: vscode.Disposable[] = [logger, codeActionProvider];
 interface CManticApi {
     getMatchingHeaderSource(uri: vscode.Uri): Promise<vscode.Uri | undefined>;
     activeLanguageServer(): LanguageServer;
-};
+}
 
 export async function activate(context: vscode.ExtensionContext): Promise<CManticApi> {
     registerCommands(context);
