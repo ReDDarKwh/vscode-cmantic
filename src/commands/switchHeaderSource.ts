@@ -11,11 +11,11 @@ export async function switchHeaderSourceInWorkspace(): Promise<boolean | undefin
 
     const matchingUri = await getMatchingHeaderSource(editor.document.uri);
     if (!matchingUri) {
-        if (activeLanguageServer() == LanguageServer.cpptools)
+        if (activeLanguageServer() === LanguageServer.cpptools) {
             vscode.commands.executeCommand('C_Cpp.SwitchHeaderSource');
-        else if (activeLanguageServer() == LanguageServer.clangd)
+        } else if (activeLanguageServer() === LanguageServer.clangd) {
             vscode.commands.executeCommand('clangd.switchheadersource');
-        else {
+        } else {
             logger.alertInformation('No matching header/source file was found.');
             return false;
         }
