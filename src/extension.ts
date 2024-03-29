@@ -16,13 +16,27 @@ const codeActionProvider = new CodeActionProvider();
 const headerSourceCache = new HeaderSourceCache();
 const disposables: vscode.Disposable[] = [logger, codeActionProvider];
 
-export async function activate(context: vscode.ExtensionContext): Promise<void> {
+interface CManticApi {
+    getMatchingHeaderSource(uri: vscode.Uri): Promise<vscode.Uri | undefined>;
+    activeLanguageServer(): LanguageServer;
+};
+
+export async function activate(context: vscode.ExtensionContext): Promise<CManticApi> {
     registerCommands(context);
     await cacheOpenDocuments();
     registerCodeActionProvider(context);
     registerEventListeners();
     pollExtensionsToSetLanguageServer();
     logActivation(context);
+
+    return {
+        getMatchingHeaderSource(uri: vscode.Uri) {
+            return getMatchingHeaderSource(uri);
+        },
+        activeLanguageServer(): LanguageServer {
+            return activeLanguageServer();
+        }
+    };
 }
 
 export function deactivate(): void {
