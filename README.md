@@ -8,6 +8,15 @@ C-mantic provides code generation and refactorings for C/C++. Relevant code-acti
 
 Full Documentation: [https://bigbahss.github.io/vscode-cmantic/](https://bigbahss.github.io/vscode-cmantic/)
 
+## Fork changes
+
+- Try to use LSP, when C-mantic can't switch header/source in workspace
+- Add option to open pair header/source file beside to current file
+- Merged [Fix parenthesis bug](https://github.com/BigBahss/vscode-cmantic/pull/60) by [@syborg64](https://github.com/syborg64)
+- Export small API:
+  - `getMatchingHeaderSource` - get the matching header/source file for the current document
+  - `activeLanguageServer` - get the active language server
+
 ## **Features at a glance**
 
 - [Add Definition](https://bigbahss.github.io/vscode-cmantic/features/add-definition/)
