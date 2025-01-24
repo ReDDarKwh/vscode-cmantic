@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as cfg from '../configuration';
 import { getMatchingHeaderSource, logger, activeLanguageServer, LanguageServer } from '../extension';
 
 
@@ -23,6 +24,32 @@ export async function switchHeaderSourceInWorkspace(): Promise<boolean | undefin
         return true;
     }
 
-    await vscode.window.showTextDocument(matchingUri);
+    if (!cfg.openPairFileBesideEnabled()) {
+        await vscode.window.showTextDocument(matchingUri);
+        return true;
+    }
+
+    const visibleEditors = vscode.window.visibleTextEditors;
+    let nextColumn = vscode.ViewColumn.Two;
+    for (const visibleEditor of visibleEditors) {
+        if (visibleEditor.document.uri.toString() === matchingUri.toString()) {
+            await vscode.window.showTextDocument(visibleEditor.document, { viewColumn: visibleEditor.viewColumn, preserveFocus: false });
+            return true;
+        }
+
+        if (nextColumn === vscode.ViewColumn.Two && editor.viewColumn && visibleEditor.viewColumn === editor.viewColumn + 1) {
+            nextColumn = editor.viewColumn + 1;
+        }
+    }
+
+    if (!editor.viewColumn) {
+        await vscode.window.showTextDocument(matchingUri, { viewColumn: vscode.ViewColumn.Beside });
+    } else if (editor.viewColumn === vscode.ViewColumn.One) {
+        await vscode.window.showTextDocument(matchingUri, { viewColumn: vscode.ViewColumn.Two });
+    } else if (editor.viewColumn > vscode.ViewColumn.One && nextColumn !== vscode.ViewColumn.Two) {
+        await vscode.window.showTextDocument(matchingUri, { viewColumn: nextColumn });
+    } else {
+        await vscode.window.showTextDocument(matchingUri, { viewColumn: editor.viewColumn - 1 });
+    }
     return true;
 }

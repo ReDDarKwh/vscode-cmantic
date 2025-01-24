@@ -184,6 +184,12 @@
             "markdownDescription": "Show `Switch Header/Source in Workspace` in the editor context menu.",
             "scope": "window"
           },
+          "C_mantic.OpenPairFileBeside": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Controls whether the `Switch Header/Source in Workspace` will open the pair file beside the active file.",
+            "scope": "window"
+          },
           "C_mantic.extensions.headerFiles": {
             "type": "array",
             "items": {

@@ -52,6 +52,7 @@ const defaultCaseStyle = CaseStyle.camelCase;
 const defaultBracedInitialization = false;
 const defaultExplicitThisPointer = false;
 const defaultFriendComparisonOperators = false;
+const defaultOpenPairFileBeside = false;
 
 export const cmanticKey = 'C_mantic';
 export const cpptoolsKey = 'C_Cpp';
@@ -92,6 +93,10 @@ export function generateGetterSetterEnabled(): boolean {
 
 export function updateSignatureEnabled(): boolean {
     return configuration().get<boolean>('codeActions.enableUpdateFunctionSignature', defaultCodeActionEnable);
+}
+
+export function openPairFileBesideEnabled(): boolean {
+    return configuration().get<boolean>('OpenPairFileBeside', defaultOpenPairFileBeside);
 }
 
 export function headerExtensions(scope: vscode.ConfigurationScope): string[] {
