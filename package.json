@@ -2,7 +2,7 @@
   "name": "cmantic",
   "displayName": "C-mantic",
   "description": "C/C++ refactorings: Generate Definitions, Getters, Setters, and much more.",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "icon": "docs/assets/images/cmantic.png",
   "publisher": "sr-team",
   "author": {
