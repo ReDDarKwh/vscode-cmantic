@@ -1,0 +1,54 @@
+name: Release VS Code Extension
+
+on:
+  push:
+    tags:
+      - 'v*' # Run workflow on version tags, e.g. v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
+        
+      - name: Package Extension
+        run: vsce package
+        
+      - name: Get Extension Information
+        id: get-extension
+        run: |
+          VSIX_PATH=$(ls *.vsix)
+          echo "::set-output name=vsix_path::$VSIX_PATH"
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "::set-output name=version::$VERSION"
+          EXTENSION_NAME=$(node -p "require('./package.json').name")
+          echo "::set-output name=name::$EXTENSION_NAME"
+      
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.get-extension.outputs.vsix_path }}
+          name: ${{ steps.get-extension.outputs.name }} v${{ steps.get-extension.outputs.version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # Optional: Publish to VS Code Marketplace
+      # - name: Publish to VS Code Marketplace
+      #   run: vsce publish -p ${{ secrets.VSCE_PAT }}
+      #   if: success()
